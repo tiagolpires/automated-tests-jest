@@ -2,7 +2,7 @@ require('dotenv').config()
 const mongoose = require('mongoose')
 const Product = require('../models/Product')
 
-describe('ProductController Functions', () => {
+describe('productController functions', () => {
     beforeAll(async () => {
         await mongoose.connect(process.env.TEST_DATABASE_URL, { useNewUrlParser: true, useUnifiedTopology: true })
     })
@@ -14,12 +14,12 @@ describe('ProductController Functions', () => {
         await mongoose.connection.close()
     })
 
-    test('Get Products', async () => {
-        const data = await index()
+    test('read function', async () => {
+        const data = await read()
         expect(data.error).toBeUndefined()
     })
 
-    test('Create Product', async () => {
+    test('store function', async () => {
         const body = {
             title: "wheel",
             categorie: "cars"
@@ -40,7 +40,7 @@ async function store(body) {
     }
 }
 
-async function index() {
+async function read() {
     try {
         const products = await Product.find()
         return products

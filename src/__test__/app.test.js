@@ -5,11 +5,11 @@ const request = superTest(app)
 const mongoose = require('mongoose')
 const Product = require('../models/Product')
 
-test('App is a module', () => {
+test('app is a module', () => {
     expect(app).toBeDefined()
 })
 
-describe('Product Routes test', () => {
+describe('product routes test', () => {
     beforeAll(async () => {
         await mongoose.connect(process.env.TEST2_DATABASE_URL, { useNewUrlParser: true, useUnifiedTopology: true })
         app.listen(3001)
@@ -22,13 +22,13 @@ describe('Product Routes test', () => {
         await mongoose.connection.close()
     })
 
-    test('Get products route', async () => {
-        const response = await request.get('/api')
+    test('get on products route', async () => {
+        const response = await request.get('/api/products')
         expect(response.status).toBe(200)
     })
 
-    test('post product', async() => {
-        const response = await request.post('/api')
+    test('post on products route', async() => {
+        const response = await request.post('/api/products')
             .send({
                 title: 'wheel',
                 categorie: 'cars'
@@ -36,25 +36,24 @@ describe('Product Routes test', () => {
         expect(response.status).toBe(200)
     })
 
-    test('Fail if title is missing in post product', async() => {
-        const response = await request.post('/api')
+    test('fail if title is missing in post request', async() => {
+        const response = await request.post('/api/products')
             .send({
                 categorie: 'cars'
             })
         expect(response.status).toBe(400)
     })
     
-    test('Fail if categorie is missing in post product', async() => {
-        const response = await request.post('/api')
+    test('fail if categorie is missing in post request', async() => {
+        const response = await request.post('/api/products')
             .send({
                 title: 'wheel',
             })
         expect(response.status).toBe(400)
     })
     
-    test('returns 404', async () => {
+    test('returns 404 if route doesnt exist', async () => {
         const response = await request.post('/fail')
         expect(response.status).toBe(404)
     })
-
 }, 30000)
